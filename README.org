@@ -1,0 +1,5 @@
+#+title: Presentations Blog
+#+author: Micah Elliott
+
+This is a collection of blog posts that also work as presentations.
+They are created with [[https://github.com/eschulte/epresent][epresent]] in mind.

@@ -1,0 +1,87 @@
+#+title: Developer Notifications
+#+Author: Micah Elliott
+#+EPRESENT_FRAME_LEVEL: 1
+
+* Intro
+
+
+- Anything can be notified
+  + long-running commands
+  + builds
+
+- Many ways to be notified
+  + phone (sms, app)
+  + desktop (growl-style)
+  + slack
+
+
+* terminal-notifier
+
+
+#+begin_src shell
+terminal-notifier -message 'hi there' -sound default
+#+end_src
+
+
+[[./img/terminal-notifier-hello.png]]
+
+* github PRs
+
+[[https://addons.mozilla.org/en-US/firefox/addon/notifier-for-github/][Firefox Notifier for Github]]
+
+* CircleCI
+
+* signal-cli
+
+A little buggy but runs everywhere
+
+#+begin_src shell
+signal-cli -u '+15035551234' send -m 'job finished' '+15035551234'
+#+end_src
+
+* noti
+
+[[https://github.com/variadico/noti][noti]] (Monitor a process and trigger a notification)
+
+* osascript
+
+This is supposed to send you a message
+
+#+begin_src shell
+osascript -e 'tell application "Messages" to send "hi there" to buddy "Micah Elliott"'
+#+end_src
+
+* 1-minute anything
+
+Any long-running shell command can trigger a notification
+  [[https://gist.github.com/MicahElliott/97df9ca799e49c0fcc0a981bf021f813][
+zbell-long-command]]
+
+#+begin_src shell
+zplug MicahElliott/97df9ca799e49c0fcc0a981bf021f813, from:gist, as:plugin, use:zbell-long-cmd.zsh
+#+end_src
+
+* emacs
+
+[[https://github.com/jwiegley/alert][Emacs Alerts]] (A Growl-like alerts notifier for Emacs )
+
+* dunnit
+
+* wait-for looping
+
+#+begin_src shell
+getver() { curl https://…/VERSION }
+declare -i ctr=0
+orig=$(getver)
+devver=$orig
+print "Detected $orig as current DEV branch; will repeatedly sleep and alert on change."
+
+while [[ $orig = $devver ]]; do
+    if (( ctr == 20 )) ; then alert "It's been a while; check CircleCI for purple dev_hold."; fi
+    if (( ctr == 100 )); then alert "It's been too long; terminating."; exit 1; fi
+    sleep 30
+    print -n .
+    ctr+=1
+    devver=$(getver)
+done
+#+end_src
